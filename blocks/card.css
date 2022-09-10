@@ -1,0 +1,42 @@
+.card {
+  width: 282px;
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+}
+.card__image {
+  width: 282px;
+  height: 282px;
+  border-radius: 10px 10px 0px 0px;
+}
+.card__description {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 25px 20px 25px 20px;
+}
+.card__title {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 219px;
+}
+.card__button-like {
+  background: url("../images/heart.svg") no-repeat center;
+  width: 21px;
+  height: 18px;
+  border: none;
+  padding: 0;
+}
+
+.card__button-like:hover {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: 0.3s;
+}
+
