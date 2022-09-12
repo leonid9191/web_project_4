@@ -46,6 +46,10 @@
 
 .profile__subtitle {
   margin: 8px 0 0;
+  max-width: 520px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .profile__button-add {
   padding: 0;
@@ -85,6 +89,7 @@
   }
   .profile__title {
     font-size: 22px;
+    max-width: 250px;
   }
 
   .profile__description {
@@ -100,6 +105,7 @@
 
   .profile__subtitle {
     text-align: center;
+    max-width: 280px;
   }
 
   .profile__button-add {
