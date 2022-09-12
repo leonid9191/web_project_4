@@ -1,13 +1,18 @@
 let closeBtn = document.querySelector(".popup__close");
 let editBtn = document.querySelector(".profile__button-edit");
+let likeBtn = document.querySelector(".card__button-like");
 
 function togglePopup() {
   let popup = document.querySelector(".popup");
   popup.classList.toggle("popup_opened");
 }
+function toggleLike() {
+  likeBtn.classList.toggle("card__button-like-active");
+}
 
 closeBtn.addEventListener("click", togglePopup);
 editBtn.addEventListener("click", togglePopup);
+likeBtn.addEventListener("click", toggleLike);
 
 // Let's find the form in the DOM
 let formElement = document.querySelector(".form"); // Use the querySelector() method

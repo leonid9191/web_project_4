@@ -33,6 +33,9 @@
   border: none;
   padding: 0;
 }
+.card__button-like-active{
+  background: url("../images/like-active.svg") no-repeat center;
+}
 
 .card__button-like:hover {
   cursor: pointer;
