@@ -32,14 +32,14 @@
   height: 18px;
   border: none;
   padding: 0;
+  transition: 0.3s;
 }
-.card__button-like-active{
+.card__button-liked{
   background: url("../images/like-active.svg") no-repeat center;
 }
 
 .card__button-like:hover {
   cursor: pointer;
-  opacity: 0.6;
-  transition: 0.3s;
+  opacity: 0.5;
 }
 

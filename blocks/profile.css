@@ -24,6 +24,7 @@
   margin: 0;
   font-weight: 500;
   font-size: 42px;
+  line-height: 48px;
   max-width: 520px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -45,6 +46,8 @@
 }
 
 .profile__subtitle {
+  font-size: 18px;
+  line-height: 22px;
   margin: 8px 0 0;
   max-width: 520px;
   text-overflow: ellipsis;
@@ -68,7 +71,7 @@
   transition: 0.3s;
 }
 
-@media screen and (min-width: 768px) and (max-width: 1279px) { 
+@media screen and (min-width: 768px) and (max-width: 1279px) {
   .profile__title {
     font-size: 28px;
   }
@@ -88,6 +91,7 @@
     flex-direction: column;
   }
   .profile__title {
+    line-height: 27px;
     font-size: 22px;
     max-width: 250px;
   }
@@ -106,6 +110,8 @@
   .profile__subtitle {
     text-align: center;
     max-width: 280px;
+    font-size: 14px;
+    line-height: 17px;
   }
 
   .profile__button-add {
