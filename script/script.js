@@ -30,8 +30,8 @@ function handleProfileFormSubmit(evt) {
   // We'll explain it in more detail later.
 
   // Let's find the form fields in the DOM
-  let nameInput = document.querySelector(".form-name"); // Use querySelector()
-  let jobInput = document.querySelector(".form-job"); // Use querySelector()
+  let nameInput = document.querySelector(".form__input_content_name"); // Use querySelector()
+  let jobInput = document.querySelector(".form__input_content_job"); // Use querySelector()
 
   // Get the values of each field from the corresponding value property
 
