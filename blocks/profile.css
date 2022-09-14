@@ -38,6 +38,7 @@
   width: 24px;
   height: 24px;
   border: 1px solid white;
+  cursor: pointer;
 }
 .profile__button-edit:hover {
   cursor: pointer;
@@ -63,6 +64,7 @@
   color: white;
   background: url("../images/plus.svg") no-repeat center;
   background-size: 22px;
+  cursor: pointer;
 }
 
 .profile__button-add:hover {

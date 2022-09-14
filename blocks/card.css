@@ -33,8 +33,9 @@
   border: none;
   padding: 0;
   transition: 0.3s;
+  cursor: pointer;
 }
-.card__button-liked{
+.card__button-like_liked{
   background: url("../images/like-active.svg") no-repeat center;
 }
 
