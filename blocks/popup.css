@@ -28,12 +28,13 @@
   margin: 0;
   font-weight: 900;
   font-size: 24px;
+  line-height: 29px;
 }
 
 .popup__close {
   border: none;
   position: absolute;
-  background: url("../images/close.svg") no-repeat center;
+  background: url("../images/close_icon.svg") no-repeat center;
   width: 40px;
   height: 40px;
   right: -40px;
@@ -47,14 +48,19 @@
 }
 
 @media screen and (max-width: 767px) {
+  .popup__header {
+    font-size: 18px;
+    line-height: 22px;
+  }
   .popup__content {
     margin: 0 19px;
+    padding: 25px 22px;
     max-width: 282px;
   }
   .popup__close {
-    width: 24px;
-    height: 24px;
-    right: 0px;
-    top: -40px;
+    width: 26px;
+    height: 26px;
+    right: 7px;
+    top: -49px;
   }
 }
