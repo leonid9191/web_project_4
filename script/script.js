@@ -55,14 +55,17 @@ function addPopup(modal) {
   jobInput.value = profileJob.textContent;
   modal.classList.add("popup_opened");
 }
-function removePopup(modal) {
-  modal.classList.remove("popup_opened");
+function removeEditModal() {
+  editModal.classList.remove("popup_opened");
+}
+function removeAddCardModal() {
+  addCardModal.classList.remove("popup_opened");
 }
 
-editModalCloseBtn.addEventListener("click", () => removePopup(editModal));
+editModalCloseBtn.addEventListener("click", () => removeEditModal());
 editModalBtn.addEventListener("click", () => addPopup(editModal));
 
-addCardModalCloseBtn.addEventListener("click", () => removePopup(addCardModal));
+addCardModalCloseBtn.addEventListener("click", () => removeAddCardModal());
 addCardModalBtn.addEventListener("click", () => addPopup(addCardModal));
 
 function handleProfileFormSubmit(evt) {
@@ -72,8 +75,8 @@ function handleProfileFormSubmit(evt) {
 
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
-
-  removePopup();
+  
+  removeEditModal()
 }
 
 //Add all cards from array by templates
