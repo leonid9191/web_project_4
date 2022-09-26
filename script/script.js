@@ -1,16 +1,19 @@
 //Wrappers
 const editModal = document.querySelector(".popup__edit-profile");
 const editFormElement = editModal.querySelector(".form");
-const cardElement = editModal.querySelector(".card");
 
 const addCardModal = document.querySelector(".popup__add-card");
 const addCardFormElement = addCardModal.querySelector(".form");
+
+const cardModal = document.querySelector(".popup-card");
 
 const gallery = document.querySelector(".gallery");
 
 //Buttons
 const editModalBtn = document.querySelector(".profile__button-edit");
 const editModalCloseBtn = editModal.querySelector(".popup__close");
+
+const cardModalCloseBtn = cardModal.querySelector(".popup-card__close");
 
 const addCardModalBtn = document.querySelector(".profile__button-add");
 const addCardModalCloseBtn = addCardModal.querySelector(".popup__close");
@@ -55,6 +58,13 @@ const initialCards = [
   },
 ];
 
+function showCardPopup(card){
+  const img = card.querySelector(".card__image");
+  
+  cardModal.querySelector(".popup-card__image").src = img.src;
+  cardModal.querySelector(".popup-card__description").textContent = img.alt;
+  cardModal.classList.add("popup-card_opened");
+}
 //Show popup
 function addPopup(modal) {
   nameInput.value = profileName.textContent;
@@ -64,6 +74,10 @@ function addPopup(modal) {
 //Hidden Edit Modal
 function removeEditModal() {
   editModal.classList.remove("popup_opened");
+}
+//Hidden Card Modal
+function removeCardModal() {
+  cardModal.classList.remove("popup-card_opened");
 }
 //Hidden Add Card Modal
 function removeAddCardModal() {
@@ -85,6 +99,10 @@ function initCard(title, link) {
     const listItem = trashBtn.closest(".card");
     listItem.remove();
   });
+
+  cardElement.querySelector('.card__image').addEventListener("click", (e) => {
+    showCardPopup(cardElement);
+  })
 
   return cardElement;
 }
@@ -121,6 +139,9 @@ editModalBtn.addEventListener("click", () => addPopup(editModal));
 
 addCardModalCloseBtn.addEventListener("click", () => removeAddCardModal());
 addCardModalBtn.addEventListener("click", () => addPopup(addCardModal));
+
+cardModalCloseBtn.addEventListener("click", () => removeCardModal());
+
 
 //Add all cards from array by templates
 initialCards.forEach((card) => {
