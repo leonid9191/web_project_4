@@ -15,8 +15,6 @@ const editModalCloseBtn = editModal.querySelector(".popup__close");
 const addCardModalBtn = document.querySelector(".profile__button-add");
 const addCardModalCloseBtn = addCardModal.querySelector(".popup__close");
 
-const likeBtn = document.querySelector(".card__button-like");
-
 //Inputs
 const nameInput = document.querySelector(".form__input_content_name");
 const jobInput = document.querySelector(".form__input_content_job");
@@ -57,31 +55,42 @@ const initialCards = [
   },
 ];
 
+//Show popup
 function addPopup(modal) {
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
   modal.classList.add("popup_opened");
 }
+//Hidden Edit Modal
 function removeEditModal() {
   editModal.classList.remove("popup_opened");
 }
+//Hidden Add Card Modal
 function removeAddCardModal() {
   addCardModal.classList.remove("popup_opened");
 }
-function initCard (title, link) {
+//Initial card
+function initCard(title, link) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
+  const trashBtn = cardElement.querySelector(".card__button-trash");
+  const likeBtn = cardElement.querySelector(".card__button-like");
   cardElement.querySelector(".card__image").src = link;
   cardElement.querySelector(".card__image").alt = title;
   cardElement.querySelector(".card__title").textContent = title;
-  
-  cardElement.querySelector(".card__button-like").addEventListener("click", function (evt) {
-    evt.target.classList.toggle('card__button-like_liked');
+
+  likeBtn.addEventListener("click", function (evt) {
+    evt.target.classList.toggle("card__button-like_liked");
+  });
+  trashBtn.addEventListener("click", (e) => {
+    const listItem = trashBtn.closest(".card");
+    listItem.remove();
   });
 
   return cardElement;
-
 }
-//Edit profile title and subtitle
+//Delete card from gallery
+function deleteCard() {}
+//Submit information profile title and subtitle
 function handleProfileFormSubmit(evt) {
   // This line stops the browser from
   // submitting the form in the default way.
@@ -92,10 +101,14 @@ function handleProfileFormSubmit(evt) {
 
   removeEditModal();
 }
+//Submit information about new card
 function handleAddCardFormSubmit(evt) {
   evt.preventDefault();
   const cardElement = initCard(titleCardInput.value, linkCardInput.value);
-  initialCards.unshift({ name: titleCardInput.value, link: linkCardInput.value });
+  initialCards.unshift({
+    name: titleCardInput.value,
+    link: linkCardInput.value,
+  });
   gallery.prepend(cardElement);
 
   removeAddCardModal();
@@ -117,4 +130,3 @@ initialCards.forEach((card) => {
 
 editFormElement.addEventListener("submit", handleProfileFormSubmit);
 addCardFormElement.addEventListener("submit", handleAddCardFormSubmit);
-

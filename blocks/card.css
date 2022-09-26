@@ -1,4 +1,5 @@
 .card {
+  position: relative;
   width: 282px;
   height: 361px;
   background-color: white;
@@ -27,6 +28,22 @@
   overflow: hidden;
   max-width: 219px;
 }
+.card__button-trash {
+  background: url("../images/trash.svg");
+  position: absolute;
+  right: 15px;
+  top: 18px;
+  width: 18px;
+  height: 20px;
+  border: none;
+  padding: 0;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.card__button-trash:hover {
+  opacity: 0.6;
+}
+
 .card__button-like {
   background: url("../images/heart.svg") no-repeat center;
   width: 21px;
@@ -36,12 +53,10 @@
   transition: 0.3s;
   cursor: pointer;
 }
-.card__button-like_liked{
+.card__button-like_liked {
   background: url("../images/like-active.svg") no-repeat center;
 }
 
 .card__button-like:hover {
-  cursor: pointer;
   opacity: 0.5;
 }
-
