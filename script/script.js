@@ -1,8 +1,8 @@
 //Wrappers
-const editModal = document.querySelector(".popup__edit-profile");
+const editModal = document.querySelector(".popup_type_edit-profile");
 const editFormElement = editModal.querySelector(".form");
 
-const addCardModal = document.querySelector(".popup__add-card");
+const addCardModal = document.querySelector(".popup_type_add-card");
 const addCardFormElement = addCardModal.querySelector(".form");
 
 const cardModal = document.querySelector(".popup-card");
