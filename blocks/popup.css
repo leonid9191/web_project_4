@@ -12,10 +12,14 @@
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
 }
-.popup_opened {
-  min-height: 100vh;
-  visibility: visible;
-  opacity: 1;
+
+.popup__card {
+  color: #ffffff;
+  position: relative;
+}
+.popup__image {
+  max-width: 75vw;
+  max-height: 75vh;
 }
 
 .popup__content {
@@ -35,6 +39,11 @@
   line-height: 29px;
 }
 
+.popup_opened {
+  min-height: 100vh;
+  visibility: visible;
+  opacity: 1;
+}
 .popup__close {
   border: none;
   position: absolute;

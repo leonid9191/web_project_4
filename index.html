@@ -48,12 +48,14 @@
               placeholder="Name"
               name="name"
               class="form__input form__input_content_name"
+              required
             />
             <input
               type="text"
               placeholder="About me"
               name="job"
               class="form__input form__input_content_job"
+              required
             />
           </fieldset>
           <button type="submit" class="form__button">Save</button>
@@ -73,12 +75,14 @@
               placeholder="Title"
               name="name"
               class="form__input form__input_content_title"
+              required
             />
             <input
               type="text"
               placeholder="Image link"
               name="job"
               class="form__input form__input_content_link"
+              required
             />
           </fieldset>
           <button type="submit" class="form__button">Save</button>
@@ -86,15 +90,16 @@
       </div>
     </div>
 
-    <div class="popup-card">
-      <div class="popup-card__content">
-        <button type="button" class="popup-card__close"></button>
+    <!-- View Card by Popup -->
+    <div class="popup popup_type_card">
+      <div class="popup__card">
+        <button type="button" class="popup__close"></button>
         <img
           src="./images/yosemite-valley.png"
           alt="Yosemite Valley"
-          class="popup-card__image"
+          class="popup__image"
         />
-        <p class="popup-card__description"></p>
+        <p class="popup__description"></p>
       </div>
     </div>
 
