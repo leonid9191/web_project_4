@@ -123,10 +123,7 @@ function handleProfileFormSubmit(evt) {
 function handleAddCardFormSubmit(evt) {
   evt.preventDefault();
   const cardElement = initCard(titleCardInput.value, linkCardInput.value);
-  initialCards.unshift({
-    name: titleCardInput.value,
-    link: linkCardInput.value,
-  });
+  
   gallery.prepend(cardElement);
 
   removeAddCardModal();
