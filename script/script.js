@@ -13,7 +13,7 @@ const gallery = document.querySelector(".gallery");
 const editModalBtn = document.querySelector(".profile__button-edit");
 const editModalCloseBtn = editModal.querySelector(".popup__close");
 
-const cardModalCloseBtn = cardModal.querySelector(".popup-card__close");
+const cardModalCloseBtn = cardModal.querySelector(".popup__close");
 
 const addCardModalBtn = document.querySelector(".profile__button-add");
 const addCardModalCloseBtn = addCardModal.querySelector(".popup__close");
@@ -61,9 +61,9 @@ const initialCards = [
 function showCardPopup(card){
   const img = card.querySelector(".card__image");
   
-  cardModal.querySelector(".popup-card__image").src = img.src;
-  cardModal.querySelector(".popup-card__description").textContent = img.alt;
-  cardModal.classList.add("popup-card_opened");
+  cardModal.querySelector(".popup__image").src = img.src;
+  cardModal.querySelector(".popup__description").textContent = img.alt;
+  cardModal.classList.add("popup_opened");
 }
 //Show popup
 function addPopup(modal) {
@@ -77,7 +77,7 @@ function removeEditModal() {
 }
 //Hidden Card Modal
 function removeCardModal() {
-  cardModal.classList.remove("popup-card_opened");
+  cardModal.classList.remove("popup_opened");
 }
 //Hidden Add Card Modal
 function removeAddCardModal() {
