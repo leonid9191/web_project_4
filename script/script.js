@@ -11,8 +11,7 @@ const gallery = document.querySelector(".gallery");
 
 //Buttons
 const editProfileModalButton = document.querySelector(".profile__button-edit");
-const editProfileModalCloseButton =
-  editProfileModal.querySelector(".popup__close");
+const editProfileModalCloseButton = editProfileModal.querySelector(".popup__close");
 
 const cardViewModalCloseButton = cardViewModal.querySelector(".popup__close");
 
@@ -61,7 +60,17 @@ const initialCards = [
   },
 ];
 
-function showCardPopup(card) {
+//Open popup
+function openPopup(modal) {
+  modal.classList.add("popup_opened");
+}
+//Hidden popup
+function hiddenPopup(modal) {
+  modal.classList.remove("popup_opened");
+}
+
+//Fill data in CardViewPopup
+function fillCardViewPopup(card) {
   const image = card.querySelector(".card__image");
   const cardViewImgage = cardViewModal.querySelector(".popup__image");
   const cardViewDescription = cardViewModal.querySelector(
@@ -71,46 +80,41 @@ function showCardPopup(card) {
   cardViewImgage.src = image.src;
   cardViewImgage.alt = image.alt;
   cardViewDescription.textContent = image.alt;
-  cardViewModal.classList.add("popup_opened");
+  openPopup(cardViewModal)
 }
-
-//Open popup
-function openPopup(modal) {
-  modal.classList.add("popup_opened");
-}
-
-//Hidden popup
-function hiddenPopup(modal) {
-  modal.classList.remove("popup_opened");
+//Fill data in editProfileMockup
+function fillEditProfileForm(name, job){
+  nameEditProfileInput.value = name;
+  jobEditProfileInput.value = job;
 }
 
 //Initial card
-function initCard(title, link) {
+function initCard(card) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
-  const trashBtn = cardElement.querySelector(".card__button-trash");
-  const likeBtn = cardElement.querySelector(".card__button-like");
-  cardElement.querySelector(".card__image").src = link;
-  cardElement.querySelector(".card__image").alt = title;
-  cardElement.querySelector(".card__title").textContent = title;
+  const imageElement = cardElement.querySelector(".card__image");
+  const titleElement = cardElement.querySelector(".card__title");
+  const trashButton = cardElement.querySelector(".card__button-trash");
+  const likeButton = cardElement.querySelector(".card__button-like");
+  imageElement.src = card.link;
+  imageElement.alt = card.name;
+  titleElement.textContent = card.name;
 
-  likeBtn.addEventListener("click", function (evt) {
+  likeButton.addEventListener("click", function (evt) {
     evt.target.classList.toggle("card__button-like_liked");
   });
-  trashBtn.addEventListener("click", (e) => {
-    const listItem = trashBtn.closest(".card");
+  trashButton.addEventListener("click", (e) => {
+    const listItem = trashButton.closest(".card");
     listItem.remove();
   });
 
   cardElement.querySelector(".card__image").addEventListener("click", (e) => {
-    showCardPopup(cardElement);
+    fillCardViewPopup(cardElement);
   });
 
   return cardElement;
 }
 //Submit information profile title and subtitle
 function handleProfileFormSubmit(evt) {
-  // This line stops the browser from
-  // submitting the form in the default way.
   evt.preventDefault();
 
   profileName.textContent = nameEditProfileInput.value;
@@ -121,7 +125,8 @@ function handleProfileFormSubmit(evt) {
 //Submit information about new card
 function handleAddCardFormSubmit(evt) {
   evt.preventDefault();
-  const cardElement = initCard(titleAddCardInput.value, linkAddCardInput.value);
+  const cardInput = {name: titleAddCardInput.value, link: linkAddCardInput.value};
+  const cardElement = initCard(cardInput);
 
   gallery.prepend(cardElement);
 
@@ -131,8 +136,7 @@ function handleAddCardFormSubmit(evt) {
 }
 
 editProfileModalButton.addEventListener("click", () => {
-  nameEditProfileInput.value = profileName.textContent;
-  jobEditProfileInput.value = profileJob.textContent;
+  fillEditProfileForm(profileName.textContent, profileJob.textContent);
   openPopup(editProfileModal);
 });
 editProfileModalCloseButton.addEventListener("click", () =>
@@ -150,7 +154,7 @@ cardViewModalCloseButton.addEventListener("click", () =>
 
 //Add all cards from array by templates
 initialCards.forEach((card) => {
-  const cardElement = initCard(card.name, card.link);
+  const cardElement = initCard(card);
   gallery.append(cardElement);
 });
 
