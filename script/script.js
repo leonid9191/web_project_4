@@ -11,7 +11,8 @@ const gallery = document.querySelector(".gallery");
 
 //Buttons
 const editProfileModalButton = document.querySelector(".profile__button-edit");
-const editProfileModalCloseButton = editProfileModal.querySelector(".popup__close");
+const editProfileModalCloseButton =
+  editProfileModal.querySelector(".popup__close");
 
 const cardViewModalCloseButton = cardViewModal.querySelector(".popup__close");
 
@@ -19,7 +20,9 @@ const addCardModalButton = document.querySelector(".profile__button-add");
 const addcardModalCloseButton = addCardModal.querySelector(".popup__close");
 
 //Inputs
-const nameEditProfileInput = document.querySelector(".form__input_content_name");
+const nameEditProfileInput = document.querySelector(
+  ".form__input_content_name"
+);
 const jobEditProfileInput = document.querySelector(".form__input_content_job");
 
 const titleAddCardInput = document.querySelector(".form__input_content_title");
@@ -58,34 +61,29 @@ const initialCards = [
   },
 ];
 
-function showCardPopup(card){
+function showCardPopup(card) {
   const image = card.querySelector(".card__image");
   const cardViewImgage = cardViewModal.querySelector(".popup__image");
-  const cardViewDescription = cardViewModal.querySelector(".popup__description");
-  
+  const cardViewDescription = cardViewModal.querySelector(
+    ".popup__description"
+  );
+
   cardViewImgage.src = image.src;
   cardViewImgage.alt = image.alt;
   cardViewDescription.textContent = image.alt;
   cardViewModal.classList.add("popup_opened");
 }
-//Show popup
-function addPopup(modal) {
-  nameEditProfileInput.value = profileName.textContent;
-  jobEditProfileInput.value = profileJob.textContent;
+
+//Open popup
+function openPopup(modal) {
   modal.classList.add("popup_opened");
 }
-//Hidden Edit Modal
-function removeEditProfileModal() {
-  editProfileModal.classList.remove("popup_opened");
+
+//Hidden popup
+function hiddenPopup(modal) {
+  modal.classList.remove("popup_opened");
 }
-//Hidden Card Modal
-function removeCardModal() {
-  cardViewModal.classList.remove("popup_opened");
-}
-//Hidden Add Card Modal
-function removeAddCardModal() {
-  addCardModal.classList.remove("popup_opened");
-}
+
 //Initial card
 function initCard(title, link) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
@@ -103,14 +101,12 @@ function initCard(title, link) {
     listItem.remove();
   });
 
-  cardElement.querySelector('.card__image').addEventListener("click", (e) => {
+  cardElement.querySelector(".card__image").addEventListener("click", (e) => {
     showCardPopup(cardElement);
-  })
+  });
 
   return cardElement;
 }
-//Delete card from gallery
-function deleteCard() {}
 //Submit information profile title and subtitle
 function handleProfileFormSubmit(evt) {
   // This line stops the browser from
@@ -120,28 +116,37 @@ function handleProfileFormSubmit(evt) {
   profileName.textContent = nameEditProfileInput.value;
   profileJob.textContent = jobEditProfileInput.value;
 
-  removeEditProfileModal();
+  hiddenPopup(editProfileModal);
 }
 //Submit information about new card
 function handleAddCardFormSubmit(evt) {
   evt.preventDefault();
   const cardElement = initCard(titleAddCardInput.value, linkAddCardInput.value);
-  
+
   gallery.prepend(cardElement);
 
-  removeAddCardModal();
+  hiddenPopup(addCardModal);
   titleAddCardInput.value = "";
   linkAddCardInput.value = "";
 }
 
-editProfileModalCloseButton.addEventListener("click", () => removeEditProfileModal());
-editProfileModalButton.addEventListener("click", () => addPopup(editProfileModal));
+editProfileModalButton.addEventListener("click", () => {
+  nameEditProfileInput.value = profileName.textContent;
+  jobEditProfileInput.value = profileJob.textContent;
+  openPopup(editProfileModal);
+});
+editProfileModalCloseButton.addEventListener("click", () =>
+  hiddenPopup(editProfileModal)
+);
 
-addcardModalCloseButton.addEventListener("click", () => removeAddCardModal());
-addCardModalButton.addEventListener("click", () => addPopup(addCardModal));
+addCardModalButton.addEventListener("click", () => openPopup(addCardModal));
+addcardModalCloseButton.addEventListener("click", () =>
+  hiddenPopup(addCardModal)
+);
 
-cardViewModalCloseButton.addEventListener("click", () => removeCardModal());
-
+cardViewModalCloseButton.addEventListener("click", () =>
+  hiddenPopup(cardViewModal)
+);
 
 //Add all cards from array by templates
 initialCards.forEach((card) => {
