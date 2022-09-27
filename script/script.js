@@ -1,6 +1,6 @@
 //Wrappers
-const editModal = document.querySelector(".popup__edit-profile");
-const editFormElement = editModal.querySelector(".form");
+const editProfileModal = document.querySelector(".popup__edit-profile");
+const editFormElement = editProfileModal.querySelector(".form");
 
 const addCardModal = document.querySelector(".popup__add-card");
 const addCardFormElement = addCardModal.querySelector(".form");
@@ -10,13 +10,13 @@ const cardModal = document.querySelector(".popup-card");
 const gallery = document.querySelector(".gallery");
 
 //Buttons
-const editModalBtn = document.querySelector(".profile__button-edit");
-const editModalCloseBtn = editModal.querySelector(".popup__close");
+const editProfileModalButton = document.querySelector(".profile__button-edit");
+const editProfileModalCloseButton = editProfileModal.querySelector(".popup__close");
 
-const cardModalCloseBtn = cardModal.querySelector(".popup__close");
+const cardModalCloseButton = cardModal.querySelector(".popup__close");
 
-const addCardModalBtn = document.querySelector(".profile__button-add");
-const addCardModalCloseBtn = addCardModal.querySelector(".popup__close");
+const addCardModalButton = document.querySelector(".profile__button-add");
+const addcardModalCloseButton = addCardModal.querySelector(".popup__close");
 
 //Inputs
 const nameInput = document.querySelector(".form__input_content_name");
@@ -72,8 +72,8 @@ function addPopup(modal) {
   modal.classList.add("popup_opened");
 }
 //Hidden Edit Modal
-function removeEditModal() {
-  editModal.classList.remove("popup_opened");
+function removeeditProfileModal() {
+  editProfileModal.classList.remove("popup_opened");
 }
 //Hidden Card Modal
 function removeCardModal() {
@@ -117,7 +117,7 @@ function handleProfileFormSubmit(evt) {
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
 
-  removeEditModal();
+  removeeditProfileModal();
 }
 //Submit information about new card
 function handleAddCardFormSubmit(evt) {
@@ -131,13 +131,13 @@ function handleAddCardFormSubmit(evt) {
   linkCardInput.value = "";
 }
 
-editModalCloseBtn.addEventListener("click", () => removeEditModal());
-editModalBtn.addEventListener("click", () => addPopup(editModal));
+editProfileModalCloseButton.addEventListener("click", () => removeeditProfileModal());
+editProfileModalButton.addEventListener("click", () => addPopup(editProfileModal));
 
-addCardModalCloseBtn.addEventListener("click", () => removeAddCardModal());
-addCardModalBtn.addEventListener("click", () => addPopup(addCardModal));
+addcardModalCloseButton.addEventListener("click", () => removeAddCardModal());
+addCardModalButton.addEventListener("click", () => addPopup(addCardModal));
 
-cardModalCloseBtn.addEventListener("click", () => removeCardModal());
+cardModalCloseButton.addEventListener("click", () => removeCardModal());
 
 
 //Add all cards from array by templates
