@@ -99,8 +99,8 @@ function initCard(card) {
   imageElement.alt = card.name;
   titleElement.textContent = card.name;
 
-  likeButton.addEventListener("click", function (evt) {
-    evt.target.classList.toggle("card__button-like_liked");
+  likeButton.addEventListener("click", (e) => {
+    e.target.classList.toggle("card__button-like_liked");
   });
   trashButton.addEventListener("click", (e) => {
     const listItem = trashButton.closest(".card");
@@ -131,8 +131,7 @@ function handleAddCardFormSubmit(evt) {
   gallery.prepend(cardElement);
 
   hiddenPopup(addCardModal);
-  titleAddCardInput.value = "";
-  linkAddCardInput.value = "";
+  addCardFormElement.reset();
 }
 
 editProfileModalButton.addEventListener("click", () => {
