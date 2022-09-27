@@ -1,11 +1,11 @@
 //Wrappers
-const editProfileModal = document.querySelector(".popup__edit-profile");
+const editProfileModal = document.querySelector(".popup_type_edit-profile");
 const editFormElement = editProfileModal.querySelector(".form");
 
-const addCardModal = document.querySelector(".popup__add-card");
+const addCardModal = document.querySelector(".popup_type_add-card");
 const addCardFormElement = addCardModal.querySelector(".form");
 
-const cardModal = document.querySelector(".popup-card");
+const cardViewModal = document.querySelector(".popup_type_card");
 
 const gallery = document.querySelector(".gallery");
 
@@ -13,17 +13,17 @@ const gallery = document.querySelector(".gallery");
 const editProfileModalButton = document.querySelector(".profile__button-edit");
 const editProfileModalCloseButton = editProfileModal.querySelector(".popup__close");
 
-const cardModalCloseButton = cardModal.querySelector(".popup__close");
+const cardViewModalCloseButton = cardViewModal.querySelector(".popup__close");
 
 const addCardModalButton = document.querySelector(".profile__button-add");
 const addcardModalCloseButton = addCardModal.querySelector(".popup__close");
 
 //Inputs
-const nameInput = document.querySelector(".form__input_content_name");
-const jobInput = document.querySelector(".form__input_content_job");
+const nameEditProfileInput = document.querySelector(".form__input_content_name");
+const jobEditProfileInput = document.querySelector(".form__input_content_job");
 
-const titleCardInput = document.querySelector(".form__input_content_title");
-const linkCardInput = document.querySelector(".form__input_content_link");
+const titleAddCardInput = document.querySelector(".form__input_content_title");
+const linkAddCardInput = document.querySelector(".form__input_content_link");
 
 //Form data
 const profileName = document.querySelector(".profile__title");
@@ -59,25 +59,28 @@ const initialCards = [
 ];
 
 function showCardPopup(card){
-  const img = card.querySelector(".card__image");
+  const image = card.querySelector(".card__image");
+  const cardViewImgage = cardViewModal.querySelector(".popup__image");
+  const cardViewDescription = cardViewModal.querySelector(".popup__description");
   
-  cardModal.querySelector(".popup__image").src = img.src;
-  cardModal.querySelector(".popup__description").textContent = img.alt;
-  cardModal.classList.add("popup_opened");
+  cardViewImgage.src = image.src;
+  cardViewImgage.alt = image.alt;
+  cardViewDescription.textContent = image.alt;
+  cardViewModal.classList.add("popup_opened");
 }
 //Show popup
 function addPopup(modal) {
-  nameInput.value = profileName.textContent;
-  jobInput.value = profileJob.textContent;
+  nameEditProfileInput.value = profileName.textContent;
+  jobEditProfileInput.value = profileJob.textContent;
   modal.classList.add("popup_opened");
 }
 //Hidden Edit Modal
-function removeeditProfileModal() {
+function removeEditProfileModal() {
   editProfileModal.classList.remove("popup_opened");
 }
 //Hidden Card Modal
 function removeCardModal() {
-  cardModal.classList.remove("popup_opened");
+  cardViewModal.classList.remove("popup_opened");
 }
 //Hidden Add Card Modal
 function removeAddCardModal() {
@@ -114,30 +117,30 @@ function handleProfileFormSubmit(evt) {
   // submitting the form in the default way.
   evt.preventDefault();
 
-  profileName.textContent = nameInput.value;
-  profileJob.textContent = jobInput.value;
+  profileName.textContent = nameEditProfileInput.value;
+  profileJob.textContent = jobEditProfileInput.value;
 
-  removeeditProfileModal();
+  removeEditProfileModal();
 }
 //Submit information about new card
 function handleAddCardFormSubmit(evt) {
   evt.preventDefault();
-  const cardElement = initCard(titleCardInput.value, linkCardInput.value);
+  const cardElement = initCard(titleAddCardInput.value, linkAddCardInput.value);
   
   gallery.prepend(cardElement);
 
   removeAddCardModal();
-  titleCardInput.value = "";
-  linkCardInput.value = "";
+  titleAddCardInput.value = "";
+  linkAddCardInput.value = "";
 }
 
-editProfileModalCloseButton.addEventListener("click", () => removeeditProfileModal());
+editProfileModalCloseButton.addEventListener("click", () => removeEditProfileModal());
 editProfileModalButton.addEventListener("click", () => addPopup(editProfileModal));
 
 addcardModalCloseButton.addEventListener("click", () => removeAddCardModal());
 addCardModalButton.addEventListener("click", () => addPopup(addCardModal));
 
-cardModalCloseButton.addEventListener("click", () => removeCardModal());
+cardViewModalCloseButton.addEventListener("click", () => removeCardModal());
 
 
 //Add all cards from array by templates
