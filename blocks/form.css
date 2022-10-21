@@ -19,10 +19,16 @@
   color: #000000;
 }
 .form__input_type_error {
-  border-bottom-color: #FF0000;
-} 
-.form__input-error_active{
-  color: #FF0000;
+  border-bottom: 1px solid #ff0000;
+}
+.form__input-error_active {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #ff0000;
 }
 
 .form__button {
