@@ -70,7 +70,6 @@ let modalClassOpened = "";
 //Open popup
 function openPopup(modal) {
   modal.classList.add("popup_opened");
-
   modalClassOpened = modal;
 }
 //Hidden popup
@@ -150,7 +149,6 @@ function handleAddCardFormSubmit(evt) {
 editProfileModalButton.addEventListener("click", () => {
   fillEditProfileForm(profileName.textContent, profileJob.textContent);
   openPopup(editProfileModal);
-  
 });
 editProfileModalCloseButton.addEventListener("click", () =>
   hiddenPopup(editProfileModal)
