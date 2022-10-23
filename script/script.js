@@ -19,7 +19,7 @@ const editProfileModalCloseButton =
 const cardViewModalCloseButton = cardViewModal.querySelector(".popup__close");
 
 const addCardModalButton = document.querySelector(".profile__button-add");
-const addcardModalCloseButton = addCardModal.querySelector(".popup__close");
+const addCardModalCloseButton = addCardModal.querySelector(".popup__close");
 
 //Inputs
 const nameEditProfileInput = document.querySelector(
@@ -64,22 +64,18 @@ const initialCards = [
   },
 ];
 
-//save name of open popup
-let modalClassOpened = "";
 
 //Open popup
 function openPopup(modal) {
   modal.classList.add("popup_opened");
-  modalClassOpened = modal;
 }
 //Hidden popup
-function hiddenPopup(modal) {
+function hidePopup(modal) {
   modal.classList.remove("popup_opened");
-  modalClassOpened = "";
 }
 
 //Fill data in CardViewPopup
-function fillCardViewPopup(card) {
+function openPreviewPopup(card) {
   const image = card.querySelector(".card__image");
   const cardViewImgage = cardViewModal.querySelector(".popup__image");
   const cardViewDescription = cardViewModal.querySelector(
@@ -117,7 +113,7 @@ function initCard(card) {
   });
 
   cardElement.querySelector(".card__image").addEventListener("click", (e) => {
-    fillCardViewPopup(cardElement);
+    openPreviewPopup(cardElement);
   });
 
   return cardElement;
@@ -129,7 +125,7 @@ function handleProfileFormSubmit(evt) {
   profileName.textContent = nameEditProfileInput.value;
   profileJob.textContent = jobEditProfileInput.value;
 
-  hiddenPopup(editProfileModal);
+  hidePopup(editProfileModal);
 }
 //Submit information about new card
 function handleAddCardFormSubmit(evt) {
@@ -142,7 +138,7 @@ function handleAddCardFormSubmit(evt) {
 
   gallery.prepend(cardElement);
 
-  hiddenPopup(addCardModal);
+  hidePopup(addCardModal);
   addCardFormElement.reset();
 }
 
@@ -151,16 +147,16 @@ editProfileModalButton.addEventListener("click", () => {
   openPopup(editProfileModal);
 });
 editProfileModalCloseButton.addEventListener("click", () =>
-  hiddenPopup(editProfileModal)
+  hidePopup(editProfileModal)
 );
 
 addCardModalButton.addEventListener("click", () => openPopup(addCardModal));
-addcardModalCloseButton.addEventListener("click", () =>
-  hiddenPopup(addCardModal)
+addCardModalCloseButton.addEventListener("click", () =>
+  hidePopup(addCardModal)
 );
 
 cardViewModalCloseButton.addEventListener("click", () =>
-  hiddenPopup(cardViewModal)
+  hidePopup(cardViewModal)
 );
 
 //Add all cards from array by templates
@@ -171,13 +167,13 @@ initialCards.forEach((card) => {
 
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
-    hiddenPopup(modalClassOpened);
+    hidePopup(document.querySelector('.popup_opened'));
   }
 });
 
 document.addEventListener("click", function (event) {
   if(event.target.classList.contains('popup')){
-    hiddenPopup(modalClassOpened);
+    hidePopup(document.querySelector('.popup_opened'));
   }
 });
 
