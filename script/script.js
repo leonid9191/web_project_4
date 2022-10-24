@@ -1,5 +1,3 @@
-
-
 //Wrappers
 const editProfileModal = document.querySelector(".popup_type_edit-profile");
 const editFormElement = editProfileModal.querySelector(".form");
@@ -64,18 +62,41 @@ const initialCards = [
   },
 ];
 
-
-//Open popup
-function openPopup(modal) {
+/**
+ * Open popup
+ * @param {string} modal
+ */
+const openPopup = (modal) => {
   modal.classList.add("popup_opened");
-}
-//Hidden popup
-function hidePopup(modal) {
-  modal.classList.remove("popup_opened");
-}
+  
+  document.addEventListener("keydown", closePopupByEscape);
+  modal.addEventListener("mousedown", closePopupOnRemoteClick);
 
-//Fill data in CardViewPopup
-function openPreviewPopup(card) {
+};
+
+/**
+ * Hide popup
+ * @param {string} modal
+ */
+const hidePopup = (modal) => {
+  const form = modal.querySelector(configClasses.formSelector);
+  const inputList = Array.from(
+    form.querySelectorAll(configClasses.inputSelector)
+  );
+  inputList.forEach((inputElement) => {
+    hideInputError(form, inputElement, configClasses);
+  });
+  
+  modal.classList.remove("popup_opened");
+  modal.removeEventListener("keydown", closePopupByEscape);
+  modal.removeEventListener("mousedown", closePopupOnRemoteClick);
+};
+
+/**
+ * Fill data in CardViewPopup
+ * @param {string} card
+ */
+const openPreviewPopup = (card) => {
   const image = card.querySelector(".card__image");
   const cardViewImgage = cardViewModal.querySelector(".popup__image");
   const cardViewDescription = cardViewModal.querySelector(
@@ -86,15 +107,24 @@ function openPreviewPopup(card) {
   cardViewImgage.alt = image.alt;
   cardViewDescription.textContent = image.alt;
   openPopup(cardViewModal);
-}
-//Fill data in editProfileMockup
-function fillEditProfileForm(name, job) {
+};
+
+/**
+ * Fill data in editProfileMockup
+ * @param {string} name
+ * @param {string} job
+ */
+const fillEditProfileForm = (name, job) => {
   nameEditProfileInput.value = name;
   jobEditProfileInput.value = job;
-}
+};
 
-//Initial card
-function initCard(card) {
+/**
+ * Initial card
+ * @param {string} card
+ * @returns
+ */
+const initCard = (card) => {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const imageElement = cardElement.querySelector(".card__image");
   const titleElement = cardElement.querySelector(".card__title");
@@ -117,18 +147,26 @@ function initCard(card) {
   });
 
   return cardElement;
-}
-//Submit information profile title and subtitle
-function handleProfileFormSubmit(evt) {
+};
+
+/**
+ * Submit information profile title and subtitle
+ * @param {event} evt
+ */
+const handleProfileFormSubmit = (evt) => {
   evt.preventDefault();
 
   profileName.textContent = nameEditProfileInput.value;
   profileJob.textContent = jobEditProfileInput.value;
 
   hidePopup(editProfileModal);
-}
-//Submit information about new card
-function handleAddCardFormSubmit(evt) {
+};
+
+/**
+ * Submit information about new card
+ * @param {event} evt
+ */
+const handleAddCardFormSubmit = (evt) => {
   evt.preventDefault();
   const cardInput = {
     name: titleAddCardInput.value,
@@ -140,7 +178,33 @@ function handleAddCardFormSubmit(evt) {
 
   hidePopup(addCardModal);
   addCardFormElement.reset();
-}
+  const sumbitButton = addCardModal.querySelector(".form__button");
+  toggleButtonState(
+    [titleAddCardInput, linkAddCardInput],
+    sumbitButton,
+    configClasses
+  );
+};
+
+/**
+ * Close popup by 'esc' key
+ * @param {event} evt
+ */
+const closePopupByEscape = (evt) => {
+  if (evt.key === "Escape") {
+    hidePopup(document.querySelector(".popup_opened"));
+  }
+};
+
+/**
+ * Close popup by click mouse out off popup
+ * @param {event} evt
+ */
+const closePopupOnRemoteClick = (evt) => {
+  if (evt.target.classList.contains("popup")) {
+    hidePopup(document.querySelector(".popup_opened"));
+  }
+};
 
 editProfileModalButton.addEventListener("click", () => {
   fillEditProfileForm(profileName.textContent, profileJob.textContent);
@@ -163,18 +227,6 @@ cardViewModalCloseButton.addEventListener("click", () =>
 initialCards.forEach((card) => {
   const cardElement = initCard(card);
   gallery.append(cardElement);
-});
-
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape") {
-    hidePopup(document.querySelector('.popup_opened'));
-  }
-});
-
-document.addEventListener("click", function (event) {
-  if(event.target.classList.contains('popup')){
-    hidePopup(document.querySelector('.popup_opened'));
-  }
 });
 
 editFormElement.addEventListener("submit", handleProfileFormSubmit);

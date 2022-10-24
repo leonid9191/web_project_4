@@ -6,7 +6,13 @@ const configClasses = {
   submitButtonSelector: ".form__button",
   inactiveButtonClass: "form__button_disabled",
 };
-//show error message under input
+
+/**
+ * Show error message under input
+ * @param {string} formElement 
+ * @param {string} inputElement 
+ * @param {object} config 
+ */
 const showInputError = (formElement, inputElement, config) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add(config.inputErrorClass);
@@ -14,7 +20,12 @@ const showInputError = (formElement, inputElement, config) => {
   errorElement.classList.add(config.errorClass);
 };
 
-//hide error message under input
+/**
+ * Hide error message under input
+ * @param {string} formElement 
+ * @param {string} inputElement 
+ * @param {object} config 
+ */
 const hideInputError = (formElement, inputElement, config) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.remove(config.inputErrorClass);
@@ -22,6 +33,12 @@ const hideInputError = (formElement, inputElement, config) => {
   errorElement.textContent = "";
 };
 
+/**
+ * Check input for errors and show/hide error message
+ * @param {string} formElement 
+ * @param {string} inputElement 
+ * @param {object} config 
+ */
 const checkInputValidity = (formElement, inputElement, config) => {
   if (!inputElement.validity.valid) {
     showInputError(formElement, inputElement, config);
@@ -30,14 +47,24 @@ const checkInputValidity = (formElement, inputElement, config) => {
   }
 };
 
-//we have invalid input or no
+
+/**
+ * Check all inputs for errors
+ * @param {array} inputList 
+ * @returns boolean
+ */
 const hasInvalidInput = (inputList) => {
   return inputList.some((inputElement) => {
     return !inputElement.validity.valid;
   });
 };
 
-//Change status of button (active/inactive)
+/**
+* Change status of button (active/inactive)
+* @param {array} inputList - array with iputs in form
+* @param {string} buttonElement - button element ('submit')
+* @param {object} config - tag classes
+*/
 const toggleButtonState = (inputList, buttonElement, config) => {
   if (hasInvalidInput(inputList)) {
     buttonElement.classList.add(config.inactiveButtonClass);
@@ -48,8 +75,11 @@ const toggleButtonState = (inputList, buttonElement, config) => {
   }
 };
 
-
-//set validation check on the form
+/**
+ * Set validation check on the form
+ * @param {*} formElement 
+ * @param {*} config 
+ */
 const setEventListeners = (formElement, config) => {
   const inputList = Array.from(
     formElement.querySelectorAll(config.inputSelector)
@@ -65,6 +95,10 @@ const setEventListeners = (formElement, config) => {
   });
 };
 
+/**
+ * Add validation on all forms
+ * @param {object} config 
+ */
 const enableValidation = (config) => {
   const fieldsetList = Array.from(
     document.querySelectorAll(config.formSelector)
@@ -76,4 +110,3 @@ const enableValidation = (config) => {
 
 
 enableValidation(configClasses);
-
