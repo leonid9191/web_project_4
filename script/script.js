@@ -68,10 +68,9 @@ const initialCards = [
  */
 const openPopup = (modal) => {
   modal.classList.add("popup_opened");
-  
+
   document.addEventListener("keydown", closePopupByEscape);
   modal.addEventListener("mousedown", closePopupOnRemoteClick);
-
 };
 
 /**
@@ -86,7 +85,7 @@ const hidePopup = (modal) => {
   inputList.forEach((inputElement) => {
     hideInputError(form, inputElement, configClasses);
   });
-  
+
   modal.classList.remove("popup_opened");
   modal.removeEventListener("keydown", closePopupByEscape);
   modal.removeEventListener("mousedown", closePopupOnRemoteClick);
@@ -201,8 +200,8 @@ const closePopupByEscape = (evt) => {
  * @param {event} evt
  */
 const closePopupOnRemoteClick = (evt) => {
-  if (evt.target.classList.contains("popup")) {
-    hidePopup(document.querySelector(".popup_opened"));
+  if (evt.target === evt.currentTarget) {
+    hidePopup(evt.target);
   }
 };
 
