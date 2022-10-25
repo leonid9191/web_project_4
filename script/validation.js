@@ -34,6 +34,23 @@ const hideInputError = (formElement, inputElement, config) => {
 };
 
 /**
+ * If form exist on the modal, hide all inputs error
+ * @param {string} modal 
+ */
+const hideAllInputsError = (modal) => {
+  const form = modal.querySelector(configClasses.formSelector);
+  if (form) {
+    const inputList = Array.from(
+      form.querySelectorAll(configClasses.inputSelector)
+    );
+    inputList.forEach((inputElement) => {
+      hideInputError(form, inputElement, configClasses);
+    });
+  }
+
+}
+
+/**
  * Check input for errors and show/hide error message
  * @param {string} formElement 
  * @param {string} inputElement 
