@@ -78,7 +78,6 @@ const openPopup = (modal) => {
  * @param {string} modal
  */
 const hidePopup = (modal) => {
-  hideAllInputsError(modal);
   modal.classList.remove("popup_opened");
   modal.removeEventListener("keydown", closePopupByEscape);
   modal.removeEventListener("mousedown", closePopupOnRemoteClick);
@@ -200,16 +199,19 @@ const closePopupOnRemoteClick = (evt) => {
 
 editProfileModalButton.addEventListener("click", () => {
   fillEditProfileForm(profileName.textContent, profileJob.textContent);
+  checkAllInputsError(editFormElement);
   openPopup(editProfileModal);
 });
-editProfileModalCloseButton.addEventListener("click", () =>
-  hidePopup(editProfileModal)
-);
+editProfileModalCloseButton.addEventListener("click", () => {
+  hidePopup(editProfileModal);
+});
 
-addCardModalButton.addEventListener("click", () => openPopup(addCardModal));
-addCardModalCloseButton.addEventListener("click", () =>
-  hidePopup(addCardModal)
-);
+addCardModalButton.addEventListener("click", () => {
+  openPopup(addCardModal);
+});
+addCardModalCloseButton.addEventListener("click", () => {
+  hidePopup(addCardModal);
+});
 
 cardViewModalCloseButton.addEventListener("click", () =>
   hidePopup(cardViewModal)
