@@ -78,14 +78,7 @@ const openPopup = (modal) => {
  * @param {string} modal
  */
 const hidePopup = (modal) => {
-  const form = modal.querySelector(configClasses.formSelector);
-  const inputList = Array.from(
-    form.querySelectorAll(configClasses.inputSelector)
-  );
-  inputList.forEach((inputElement) => {
-    hideInputError(form, inputElement, configClasses);
-  });
-
+  hideAllInputsError(modal);
   modal.classList.remove("popup_opened");
   modal.removeEventListener("keydown", closePopupByEscape);
   modal.removeEventListener("mousedown", closePopupOnRemoteClick);
