@@ -1,3 +1,5 @@
+import FormValidator from "./FormValidator.js"; 
+
 //Wrappers
 const editProfileModal = document.querySelector(".popup_type_edit-profile");
 const editFormElement = editProfileModal.querySelector(".form");
@@ -199,7 +201,7 @@ const closePopupOnRemoteClick = (evt) => {
 
 editProfileModalButton.addEventListener("click", () => {
   fillEditProfileForm(profileName.textContent, profileJob.textContent);
-  checkAllInputsError(editFormElement);
+  // checkAllInputsError(editFormElement);
   openPopup(editProfileModal);
 });
 editProfileModalCloseButton.addEventListener("click", () => {
@@ -225,3 +227,15 @@ initialCards.forEach((card) => {
 
 editFormElement.addEventListener("submit", handleProfileFormSubmit);
 addCardFormElement.addEventListener("submit", handleAddCardFormSubmit);
+
+const configClasses = {
+  inputSelector: ".form__input",
+  inputErrorClass: "form__input_type_error",
+  errorClass: "form__input-error_active",
+  submitButtonSelector: ".form__button",
+  inactiveButtonClass: "form__button_disabled",
+};
+const editFormValidation = new FormValidator(configClasses, editFormElement);
+editFormValidation.enableValidation();
+const addCardFormValidation = new FormValidator(configClasses, addCardFormElement);
+addCardFormValidation.enableValidation();
