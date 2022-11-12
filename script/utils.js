@@ -20,25 +20,6 @@ const hidePopup = (modal) => {
 };
 
 /**
- * Fill data in CardViewPopup
- * @param {string} card
- */
-const openPreviewPopup = (card) => {
-  const image = card.querySelector(".card__image");
-  const cardViewImgage = document
-    .querySelector(".popup_type_card")
-    .querySelector(".popup__image");
-  const cardViewDescription = document
-    .querySelector(".popup_type_card")
-    .querySelector(".popup__description");
-
-  cardViewImgage.src = image.src;
-  cardViewImgage.alt = image.alt;
-  cardViewDescription.textContent = image.alt;
-  openPopup(document.querySelector(".popup_type_card"));
-};
-
-/**
  * Close popup by 'esc' key
  * @param {event} evt
  */
@@ -58,4 +39,4 @@ const closePopupOnRemoteClick = (evt) => {
   }
 };
 
-export { openPopup, hidePopup, openPreviewPopup };
+export { openPopup, hidePopup };
