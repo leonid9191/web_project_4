@@ -1,43 +1,49 @@
 class Card {
-  constructor(title, link, cardSelector) {
+  constructor(title, link, cardSelector, handleImageClick) {
     this._title = title;
     this._link = link;
     this._cardSelector = cardSelector;
+    this._handleImageClick = handleImageClick;
+    this._element = this._cardSelector.querySelector(".card").cloneNode(true);
+    this._likeButton = this._element.querySelector(".card__button-like");
+    this._imageElement = this._element.querySelector(".card__image");
+    this._trashButton = this._element.querySelector(".card__button-trash");
   }
-/**
- * cards template
- * @returns object
- */
-  _getTemplate() {
-    const cardElement = this._cardSelector
-      .querySelector(".card")
-      .cloneNode(true);
-    return cardElement;
-  }
-/**
- * new element with card by template
- * @returns object
- */
-  generateCard() {
-    this._element = this._getTemplate();
-    const trashButton = this._element.querySelector(".card__button-trash");
-    const likeButton = this._element.querySelector(".card__button-like");
 
-    this._element.querySelector(".card__image").src = this._link;
-    this._element.querySelector(".card__image").alt = this._title;
-    this._element.querySelector(".card__title").textContent = this._title;
+  /**
+   * remove card
+   */
+  _handleDelete = () => {
+    this._element.remove();
+    this._element = null;
+  };
 
-    likeButton.addEventListener("click", (e) => {
+  /**
+   * set all listeners on the card
+   */
+  _setEventListeners = () => {
+    this._likeButton.addEventListener("click", (e) => {
       e.target.classList.toggle("card__button-like_liked");
     });
+    this._imageElement.addEventListener("click", () =>
+      this._handleImageClick(this._element)
+    );
+    this._trashButton.addEventListener("click", this._handleDelete);
+  };
 
-    trashButton.addEventListener("click", (e) => {
-      const listItem = trashButton.closest(".card");
-      listItem.remove();
-    });
+  /**
+   * new element with card by template
+   * @returns object
+   */
+  generateCard = () => {
+    this._imageElement.src = this._link;
+    this._imageElement.alt = this._title;
+    this._element.querySelector(".card__title").textContent = this._title;
+
+    this._setEventListeners();
 
     return this._element;
-  }
+  };
 }
 
 export default Card;

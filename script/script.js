@@ -1,6 +1,6 @@
 import FormValidator from "./FormValidator.js";
 import Card from "./Card.js";
-import { openPopup, hidePopup, openPreviewPopup } from "./utils.js";
+import { openPopup, hidePopup } from "./utils.js";
 
 //Wrappers
 const editProfileModal = document.querySelector(".popup_type_edit-profile");
@@ -10,6 +10,8 @@ const addCardModal = document.querySelector(".popup_type_add-card");
 const addCardFormElement = addCardModal.querySelector(".form");
 
 const cardViewModal = document.querySelector(".popup_type_card");
+const cardViewImgage = cardViewModal.querySelector(".popup__image");
+const cardViewDescription = cardViewModal.querySelector(".popup__description");
 
 const gallery = document.querySelector(".gallery");
 
@@ -39,6 +41,14 @@ const profileJob = document.querySelector(".profile__subtitle");
 
 const cardTemplate = document.querySelector("#card").content;
 
+const configClasses = {
+  inputSelector: ".form__input",
+  inputErrorClass: "form__input_type_error",
+  errorClass: "form__input-error_active",
+  submitButtonSelector: ".form__button",
+  inactiveButtonClass: "form__button_disabled",
+};
+
 const initialCards = [
   {
     name: "Government office in Putrajaya, Malaysia.",
@@ -65,6 +75,29 @@ const initialCards = [
     link: "https://code.s3.yandex.net/web-code/lago.jpg",
   },
 ];
+
+/**
+ * Generate new card
+ * @param {Object} cardObject 
+ * @returns Object 
+ */
+const createCard = (cardObject) => {
+  const card = new Card(cardObject.name, cardObject.link, cardTemplate, openPreviewPopup);
+  return card.generateCard();
+};
+
+/**
+ * Fill data in CardViewPopup
+ * @param {string} card
+ */
+const openPreviewPopup = (card) => {
+  const image = card.querySelector(".card__image");
+
+  cardViewImgage.src = image.src;
+  cardViewImgage.alt = image.alt;
+  cardViewDescription.textContent = image.alt;
+  openPopup(document.querySelector(".popup_type_card"));
+};
 
 /**
  * Fill data in editProfileMockup
@@ -98,14 +131,12 @@ const handleAddCardFormSubmit = (evt) => {
     name: titleAddCardInput.value,
     link: linkAddCardInput.value,
   };
-  const cardElement = new Card(cardInput.name, cardInput.link, cardTemplate);
-  gallery.prepend(cardElement.generateCard());
-  const galleryAll = gallery.querySelectorAll(".card__image");
-  galleryAll[0].addEventListener("click", () => {
-    openPreviewPopup(cardElement.generateCard());
-  });
+  const cardElement = createCard(cardInput);
+  gallery.prepend(cardElement);
+
   hidePopup(addCardModal);
   addCardFormElement.reset();
+  addCardFormValidation.toggleButtonState();
 };
 
 editProfileModalButton.addEventListener("click", () => {
@@ -127,34 +158,20 @@ cardViewModalCloseButton.addEventListener("click", () => {
   hidePopup(cardViewModal);
 });
 
+
+
 //Add all cards from array by templates
 initialCards.forEach((card) => {
-  const cardElement = new Card(card.name, card.link, cardTemplate);
-  gallery.append(cardElement.generateCard());
-
-  cardElement
-    .generateCard()
-    .querySelector(".card__image")
-    .addEventListener("click", () => {
-      openPreviewPopup(cardElement.generateCard());
-    });
-  const galleryAll = gallery.querySelectorAll(".card__image");
-  galleryAll[galleryAll.length - 1].addEventListener("click", () => {
-    openPreviewPopup(cardElement.generateCard());
-  });
+  const cardElement = createCard(card);
+  gallery.append(cardElement);
 });
+
 editFormElement.addEventListener("submit", handleProfileFormSubmit);
 addCardFormElement.addEventListener("submit", handleAddCardFormSubmit);
 
-const configClasses = {
-  inputSelector: ".form__input",
-  inputErrorClass: "form__input_type_error",
-  errorClass: "form__input-error_active",
-  submitButtonSelector: ".form__button",
-  inactiveButtonClass: "form__button_disabled",
-};
-const editFormValidation = new FormValidator(configClasses, editFormElement);
-editFormValidation.enableValidation();
+
+const editProfileFormValidator = new FormValidator(configClasses, editFormElement);
+editProfileFormValidator.enableValidation();
 const addCardFormValidation = new FormValidator(
   configClasses,
   addCardFormElement
