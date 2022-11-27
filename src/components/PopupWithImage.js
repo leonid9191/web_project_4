@@ -5,7 +5,6 @@ class PopupWithImage extends Popup {
     super(popupSelector);
   }
   open( name, link ) {
-    console.log(name, link);
     this._popupElement.querySelector(".popup__description").textContent = name;
     const image = this._popupElement.querySelector(".popup__image");
     image.src = link;
