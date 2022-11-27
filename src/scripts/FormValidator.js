@@ -11,6 +11,12 @@ class FormValidator {
     this._buttonElement = this._form.querySelector(this._submitButtonSelector);
   }
 
+  resetValidation() {
+    this._inputList.forEach((input) => {
+      this._hideInputError(input);
+    })
+  }
+
   /**
    * Show error
    * @param {object} inputElement
