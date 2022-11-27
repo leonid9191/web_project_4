@@ -1,7 +1,13 @@
 import "../styles/index.css"; // add import of the main stylesheets file
-import FormValidator from "./FormValidator.js";
+
 import Card from "./Card.js";
+import FormValidator from "./FormValidator.js";
+import Section from "../components/Section.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import UserInfo from "../components/UserInfo.js";
 import { openPopup, hidePopup } from "./utils.js";
+import { configClasses, initialCards } from "./constants.js";
 
 //Wrappers
 const editProfileModal = document.querySelector(".popup_type_edit-profile");
@@ -42,48 +48,43 @@ const profileJob = document.querySelector(".profile__subtitle");
 
 const cardTemplate = document.querySelector("#card").content;
 
-const configClasses = {
-  inputSelector: ".form__input",
-  inputErrorClass: "form__input_type_error",
-  errorClass: "form__input-error_active",
-  submitButtonSelector: ".form__button",
-  inactiveButtonClass: "form__button_disabled",
-};
+// const cards = new Section(
+//   {
+//     items: initialCards,
+//     renderer: (cardData) => {
+//       const card = createCard(cardData);
+//       cards.addItem(card);
+//     },
+//   },
+//   '.elements__list',
+// );
+// cards.renderItems();
 
-const initialCards = [
-  {
-    name: "Government office in Putrajaya, Malaysia.",
-    link: "https://images.unsplash.com/photo-1648291881755-f984c18e16cb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDZ8fHxlbnwwfHx8fA%3D%3D&w=1000&q=80",
-  },
-  {
-    name: "Lake Louise",
-    link: "https://code.s3.yandex.net/web-code/lake-louise.jpg",
-  },
-  {
-    name: "Bald Mountains",
-    link: "https://code.s3.yandex.net/web-code/bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://code.s3.yandex.net/web-code/latemar.jpg",
-  },
-  {
-    name: "Vanoise National Park",
-    link: "https://code.s3.yandex.net/web-code/vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://code.s3.yandex.net/web-code/lago.jpg",
-  },
-];
+// const imageModal = new PopupWithImage(".popup_type_card");
+// const addNewCardModal = new PopupWithForm(".popup_type_add-card", (data) => {
+//   console.log(data);
+//   renderCard(data);
+// });
+// const editModal = new PopupWithForm(".popup_type_add-card", (data) => {
+//   console.log(data);
+//   renderCard(data);
+// });
+// imageModal.setEventListeners();
+// addNewCardModal.setEventListeners();
+// editModal.setEventListeners();
+
+const imageModal = new PopupWithImage("popup_type_card");
+imageModal.setEventListeners();
 
 /**
  * Generate new card
- * @param {Object} cardObject 
- * @returns Object 
+ * @param {Object} cardObject
+ * @returns Object
  */
 const createCard = (cardObject) => {
-  const card = new Card(cardObject.name, cardObject.link, cardTemplate, openPreviewPopup);
+  const card = new Card(cardObject.name, cardObject.link, cardTemplate, () => {
+    imageModal.open(cardObject.name, cardObject.link);
+  });
   return card.generateCard();
 };
 
@@ -91,14 +92,14 @@ const createCard = (cardObject) => {
  * Fill data in CardViewPopup
  * @param {string} card
  */
-const openPreviewPopup = (card) => {
-  const image = card.querySelector(".card__image");
+// const openPreviewPopup = (card) => {
+//   const image = card.querySelector(".card__image");
 
-  cardViewImgage.src = image.src;
-  cardViewImgage.alt = image.alt;
-  cardViewDescription.textContent = image.alt;
-  openPopup(document.querySelector(".popup_type_card"));
-};
+//   cardViewImgage.src = image.src;
+//   cardViewImgage.alt = image.alt;
+//   cardViewDescription.textContent = image.alt;
+//   openPopup(document.querySelector(".popup_type_card"));
+// };
 
 /**
  * Fill data in editProfileMockup
@@ -159,8 +160,6 @@ cardViewModalCloseButton.addEventListener("click", () => {
   hidePopup(cardViewModal);
 });
 
-
-
 //Add all cards from array by templates
 initialCards.forEach((card) => {
   const cardElement = createCard(card);
@@ -170,8 +169,10 @@ initialCards.forEach((card) => {
 editFormElement.addEventListener("submit", handleProfileFormSubmit);
 addCardFormElement.addEventListener("submit", handleAddCardFormSubmit);
 
-
-const editProfileFormValidator = new FormValidator(configClasses, editFormElement);
+const editProfileFormValidator = new FormValidator(
+  configClasses,
+  editFormElement
+);
 editProfileFormValidator.enableValidation();
 const addCardFormValidation = new FormValidator(
   configClasses,
