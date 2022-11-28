@@ -1,13 +1,12 @@
-import "../styles/index.css"; // add import of the main stylesheets file
+import "./index.css"; // add import of the main stylesheets file
 
-import Card from "./Card.js";
-import FormValidator from "./FormValidator.js";
+import Card from "../scripts/Card.js";
+import FormValidator from "../scripts/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
-import { openPopup, hidePopup } from "./utils.js";
-import { configClasses, initialCards } from "./constants.js";
+import { configClasses, initialCards } from "../scripts/constants.js";
 
 //Wrappers
 const editProfileModal = document.querySelector(".popup_type_edit-profile");
@@ -87,7 +86,7 @@ const addNewCardModal = new PopupWithForm("popup_type_add-card", (data) => {
 addNewCardModal.setEventListeners();
 
 addCardModalButton.addEventListener("click", () => {
-  openPopup(addCardModal);
+  addNewCardModal.open()
   addCardFormValidation.resetValidation();
 });
 

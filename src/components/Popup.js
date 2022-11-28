@@ -20,7 +20,7 @@ class Popup {
 
   open() {
     this._popupElement.classList.add('popup_opened');
-    document.addEventListener('keyup', (evt) => this._handleEscClose(evt));
+    document.addEventListener('keyup', this._handleEscClose);
   }
 
   close() {
