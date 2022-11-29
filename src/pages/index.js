@@ -30,21 +30,49 @@ const jobEditProfileInput = document.querySelector(".form__input_content_job");
 
 const cardTemplate = document.querySelector("#card").content;
 
-
-const imageModal = new PopupWithImage("popup_type_card");
-imageModal.setEventListeners();
-
 /**
  * Generate new card
  * @param {Object} cardObject
  * @returns Object
  */
-const createCard = (cardObject) => {
+ const createCard = (cardObject) => {
   const card = new Card(cardObject.name, cardObject.link, cardTemplate, () => {
     imageModal.open(cardObject.name, cardObject.link);
   });
   return card.generateCard();
 };
+
+
+const cards = new Section(
+  {
+    items: initialCards,
+    renderer: (data) => {
+      const cardInput = {
+        name: data.name,
+        link: data.link,
+      };
+      const cardElement = createCard(cardInput);
+      return cardElement;
+    },
+  },
+  ".gallery"
+);
+cards.renderItems();
+
+const addNewCardModal = new PopupWithForm("popup_type_add-card", (data) => {
+  const cardInput = {
+    name: data.name,
+    link: data.link,
+  };
+  const cardElement = createCard(cardInput);
+  cards.prepenedItem(cardElement);
+  addCardFormValidation.toggleButtonState();
+});
+
+const imageModal = new PopupWithImage("popup_type_card");
+imageModal.setEventListeners();
+
+
 
 /**
  * Fill data in editProfileMockup
@@ -73,54 +101,23 @@ editProfileModalButton.addEventListener("click", () => {
   editProfileFormValidator.resetValidation();
 });
 
-const addNewCardModal = new PopupWithForm("popup_type_add-card", (data) => {
-  const cardInput = {
-    name: data.name,
-    link: data.link,
-  };
-  const cardElement = createCard(cardInput);
-  gallery.prepend(cardElement);
-  addCardFormValidation.toggleButtonState();
-});
-
 addNewCardModal.setEventListeners();
 
 addCardModalButton.addEventListener("click", () => {
-  addNewCardModal.open()
+  addNewCardModal.open();
   addCardFormValidation.resetValidation();
-});
-
-//Add all cards from array by templates
-initialCards.forEach((card) => {
-  const cardElement = createCard(card);
-  gallery.append(cardElement);
+  addCardFormValidation.toggleButtonState();
 });
 
 //--------------------------Validation-------------------------------------
 const editProfileFormValidator = new FormValidator(
   configClasses,
   editFormElement
-  );
-  editProfileFormValidator.enableValidation();
-  const addCardFormValidation = new FormValidator(
-    configClasses,
-    addCardFormElement
-    );
-    addCardFormValidation.enableValidation();
-    
-    const cards = new Section(
-      {
-        items: initialCards,
-        renderer: (data) => {
-          const cardInput = {
-            name: data.name,
-            link: data.link,
-          };
-          const cardElement = createCard(cardInput);
-          gallery.prepend(cardElement);
-          addCardFormValidation.toggleButtonState();
-        },
-      },
-      ".gallery"
-    );
-    cards.renderItems();
+);
+editProfileFormValidator.enableValidation();
+const addCardFormValidation = new FormValidator(
+  configClasses,
+  addCardFormElement
+);
+addCardFormValidation.enableValidation();
+

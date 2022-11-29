@@ -3,9 +3,11 @@ import Popup from "./Popup";
 class PopupWithImage extends Popup {
   constructor (popupSelector){
     super(popupSelector);
+    this.popUpDescription = this._popupElement.querySelector(".popup__description");
+
   }
   open( name, link ) {
-    this._popupElement.querySelector(".popup__description").textContent = name;
+    this.popUpDescription.textContent = name;
     const image = this._popupElement.querySelector(".popup__image");
     image.src = link;
     image.alt = name;
