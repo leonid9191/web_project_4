@@ -1,12 +1,12 @@
 import "./index.css"; // add import of the main stylesheets file
-
+import Api from "../components/Api.js";
 import Card from "../scripts/Card.js";
 import FormValidator from "../scripts/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
-import { configClasses, initialCards } from "../scripts/constants.js";
+import { configClasses } from "../scripts/constants.js";
 
 //Wrappers
 const editProfileModal = document.querySelector(".popup_type_edit-profile");
@@ -14,8 +14,6 @@ const editFormElement = editProfileModal.querySelector(".form");
 
 const addCardModal = document.querySelector(".popup_type_add-card");
 const addCardFormElement = addCardModal.querySelector(".form");
-
-const gallery = document.querySelector(".gallery");
 
 //Buttons
 const editProfileModalButton = document.querySelector(".profile__button-edit");
@@ -35,29 +33,42 @@ const cardTemplate = document.querySelector("#card").content;
  * @param {Object} cardObject
  * @returns Object
  */
- const createCard = (cardObject) => {
+const createCard = (cardObject) => {
   const card = new Card(cardObject.name, cardObject.link, cardTemplate, () => {
     imageModal.open(cardObject.name, cardObject.link);
   });
   return card.generateCard();
 };
 
-
-const cards = new Section(
-  {
-    items: initialCards,
-    renderer: (data) => {
-      const cardInput = {
-        name: data.name,
-        link: data.link,
-      };
-      const cardElement = createCard(cardInput);
-      return cardElement;
-    },
+//------------------------API----------------------------------
+const api = new Api({
+  baseUrl: "https://around.nomoreparties.co/v1/cohort-3-en",
+  headers: {
+    authorization: "4be499fc-5672-4523-b62c-e8d2a297b26e",
+    "Content-Type": "application/json",
   },
-  ".gallery"
-);
-cards.renderItems();
+});
+
+const getInitalCards = api.getInitialCards();
+
+Promise.all([getInitalCards]).then((items) => {
+  const [initialCards] = items
+  const cards = new Section(
+    {
+      items: initialCards,
+      renderer: (data) => {
+        const cardInput = {
+          name: data.name,
+          link: data.link,
+        };
+        const cardElement = createCard(cardInput);
+        return cardElement;
+      },
+    },
+    ".gallery"
+  );
+  cards.renderItems();
+});
 
 const addNewCardModal = new PopupWithForm("popup_type_add-card", (data) => {
   const cardInput = {
@@ -72,22 +83,24 @@ const addNewCardModal = new PopupWithForm("popup_type_add-card", (data) => {
 const imageModal = new PopupWithImage("popup_type_card");
 imageModal.setEventListeners();
 
-
-
 /**
  * Fill data in editProfileMockup
  * @param {string} name
  * @param {string} job
  */
-const fillEditProfileForm = (name, job) => {
+const fillEditProfileForm = (name, about) => {
   nameEditProfileInput.value = name;
-  jobEditProfileInput.value = job;
+  jobEditProfileInput.value = about;
 };
 
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   jobSelector: ".profile__subtitle",
 });
+const getUser = api.getUserInfo();
+  getUser.then((data) => {
+    userInfo.setUserInfo(data);
+  });
 
 const editModal = new PopupWithForm("popup_type_edit-profile", (data) => {
   userInfo.setUserInfo(data);
@@ -96,7 +109,7 @@ editModal.setEventListeners();
 
 editProfileModalButton.addEventListener("click", () => {
   const data = userInfo.getUserInfo();
-  fillEditProfileForm(data.name, data.job);
+  fillEditProfileForm(data.name, data.about);
   editModal.open();
   editProfileFormValidator.resetValidation();
 });
@@ -120,4 +133,3 @@ const addCardFormValidation = new FormValidator(
   addCardFormElement
 );
 addCardFormValidation.enableValidation();
-
