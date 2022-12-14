@@ -21,22 +21,44 @@ export default class Api {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
     })
-      .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
+      .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
       .catch((err) => {
         console.log(err);
       });
   }
   editUserInfo(newUserInfo) {
     return fetch(`${this._baseUrl}/users/me`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: this._headers,
       body: JSON.stringify(newUserInfo),
     })
-    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
+      .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
       .catch((err) => {
         console.log(err);
       });
   }
 
+  addCard(newCardInfo) {
+    console.log(newCardInfo);
+    return fetch(`${this._baseUrl}/cards`, {
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify(newCardInfo),
+    })
+      .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
+  deleteCard(cardId) {
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
+      method: "DELETE",
+      headers: this._headers,
+    })
+      .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 }

@@ -34,7 +34,8 @@ const cardTemplate = document.querySelector("#card").content;
  * @returns Object
  */
 const createCard = (cardObject) => {
-  const card = new Card(cardObject.name, cardObject.link, cardTemplate, () => {
+  console.log('cardobject',cardObject);
+  const card = new Card(cardObject, cardTemplate, () => {
     imageModal.open(cardObject.name, cardObject.link);
   });
   return card.generateCard();
@@ -50,18 +51,14 @@ const api = new Api({
 });
 
 const getInitalCards = api.getInitialCards();
-
+let cards;
 Promise.all([getInitalCards]).then((items) => {
-  const [initialCards] = items
-  const cards = new Section(
+  const [initialCards] = items;
+  cards = new Section(
     {
       items: initialCards,
       renderer: (data) => {
-        const cardInput = {
-          name: data.name,
-          link: data.link,
-        };
-        const cardElement = createCard(cardInput);
+        const cardElement = createCard(data);
         return cardElement;
       },
     },
@@ -71,13 +68,11 @@ Promise.all([getInitalCards]).then((items) => {
 });
 
 const addNewCardModal = new PopupWithForm("popup_type_add-card", (data) => {
-  const cardInput = {
-    name: data.name,
-    link: data.link,
-  };
-  const cardElement = createCard(cardInput);
-  cards.prepenedItem(cardElement);
-  addCardFormValidation.toggleButtonState();
+  api.addCard(data).then((res) => {
+    const cardElement = createCard(res);
+    cards.prepenedItem(cardElement);
+    addCardFormValidation.toggleButtonState();
+  });
 });
 
 const imageModal = new PopupWithImage("popup_type_card");
@@ -98,9 +93,9 @@ const userInfo = new UserInfo({
   jobSelector: ".profile__subtitle",
 });
 const getUser = api.getUserInfo();
-  getUser.then((data) => {
-    userInfo.setUserInfo(data);
-  });
+getUser.then((data) => {
+  userInfo.setUserInfo(data);
+});
 
 const editModal = new PopupWithForm("popup_type_edit-profile", (data) => {
   userInfo.setUserInfo(data);
