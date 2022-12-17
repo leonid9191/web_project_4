@@ -8,7 +8,6 @@ class FormValidator {
 
     this._form = formElement;
     this._inputList = [...this._form.querySelectorAll(this._inputSelector)];
-    console.log(this._inputList)
     this._buttonElement = this._form.querySelector(this._submitButtonSelector);
   }
 

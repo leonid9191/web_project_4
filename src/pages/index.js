@@ -120,21 +120,29 @@ Promise.all([api.getInitialCards(), getUser]).then(([items, userData]) => {
   cards.renderItems();
 });
 
-const addNewCardModal = new PopupWithForm("popup_type_add-card", (data) => {
-  api.addCard(data).then((res) => {
-    const cardElement = createCard(res, userId);
-    cards.prepenedItem(cardElement);
-    addCardFormValidation.toggleButtonState();
-  });
-});
+const addNewCardModal = new PopupWithForm(
+  "popup_type_add-card",
+  "Save",
+  (data) => {
+    return api.addCard(data).then((res) => {
+      const cardElement = createCard(res, userId);
+      cards.prepenedItem(cardElement);
+      addCardFormValidation.toggleButtonState();
+    });
+  }
+);
 addNewCardModal.setEventListeners();
 
-const editAvatarModal = new PopupWithForm("popup_type_edit-avatar", (data) => {
-  api.editUserAvatar(data.link).then((res) => {
-    userInfo.setAvatar({ avatar: data.link });
-    addCardFormValidation.toggleButtonState();
-  });
-});
+const editAvatarModal = new PopupWithForm(
+  "popup_type_edit-avatar",
+  "Save",
+  (data) => {
+    return api.editUserAvatar(data.link).then((res) => {
+      userInfo.setAvatar({ avatar: data.link });
+      addCardFormValidation.toggleButtonState();
+    });
+  }
+);
 editAvatarModal.setEventListeners();
 
 const imageModal = new PopupWithImage("popup_type_card");
@@ -163,8 +171,8 @@ addCardModalButton.addEventListener("click", () => {
 });
 editAvatarButton.addEventListener("click", () => {
   editAvatarModal.open();
-  // editAvatarCardFormValidation.resetValidation();
-  // editAvatarCardFormValidation.toggleButtonState();
+  editAvatarCardFormValidation.resetValidation();
+  editAvatarCardFormValidation.toggleButtonState();
 });
 
 //--------------------------Validation-------------------------------------

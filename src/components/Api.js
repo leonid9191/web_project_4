@@ -3,6 +3,10 @@ export default class Api {
     this._baseUrl = baseUrl;
     this._headers = headers;
   }
+
+  _checkResponse(res) {
+    return res.ok ? res.json() : Promise.reject(res.statusText);
+  }
   /**
    * get info about user from server
    * @returns Object
@@ -11,7 +15,7 @@ export default class Api {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
     })
-      .then((res) => res.json())
+      .then(this._checkResponse)
       .catch((err) => {
         console.log(err);
       });
@@ -32,20 +36,19 @@ export default class Api {
       headers: this._headers,
       body: JSON.stringify(newUserInfo),
     })
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
+      .then(this._checkResponse)
       .catch((err) => {
         console.log(err);
       });
   }
 
   addCard(newCardInfo) {
-    console.log(newCardInfo);
     return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify(newCardInfo),
     })
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
+      .then(this._checkResponse)
       .catch((err) => {
         console.log(err);
       });
@@ -56,7 +59,7 @@ export default class Api {
       method: "DELETE",
       headers: this._headers,
     })
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
+      .then(this._checkResponse)
       .catch((err) => {
         console.log(err);
       });
@@ -67,7 +70,7 @@ export default class Api {
       method: "PUT",
       headers: this._headers,
     })
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
+      .then(this._checkResponse)
       .catch((err) => {
         console.log(err);
       });
@@ -77,7 +80,7 @@ export default class Api {
       method: "DELETE",
       headers: this._headers,
     })
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
+      .then(this._checkResponse)
       .catch((err) => {
         console.log(err);
       });
@@ -89,7 +92,7 @@ export default class Api {
       headers: this._headers,
       body: JSON.stringify({ avatar }),
     })
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
+      .then(this._checkResponse)
       .catch((err) => {
         console.log(err);
       });
