@@ -5,6 +5,7 @@ import FormValidator from "../scripts/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithSubmit from "../components/PopupWithSubmit.js";
 import UserInfo from "../components/UserInfo.js";
 import { configClasses } from "../scripts/constants.js";
 
@@ -27,20 +28,6 @@ const nameEditProfileInput = document.querySelector(
 const jobEditProfileInput = document.querySelector(".form__input_content_job");
 
 const cardTemplate = document.querySelector("#card").content;
-
-/**
- * Generate new card
- * @param {Object} cardObject
- * @returns Object
- */
-const createCard = (cardObject) => {
-  console.log('cardobject',cardObject);
-  const card = new Card(cardObject, cardTemplate, () => {
-    imageModal.open(cardObject.name, cardObject.link);
-  });
-  return card.generateCard();
-};
-
 //------------------------API----------------------------------
 const api = new Api({
   baseUrl: "https://around.nomoreparties.co/v1/cohort-3-en",
@@ -49,34 +36,6 @@ const api = new Api({
     "Content-Type": "application/json",
   },
 });
-
-const getInitalCards = api.getInitialCards();
-let cards;
-Promise.all([getInitalCards]).then((items) => {
-  const [initialCards] = items;
-  cards = new Section(
-    {
-      items: initialCards,
-      renderer: (data) => {
-        const cardElement = createCard(data);
-        return cardElement;
-      },
-    },
-    ".gallery"
-  );
-  cards.renderItems();
-});
-
-const addNewCardModal = new PopupWithForm("popup_type_add-card", (data) => {
-  api.addCard(data).then((res) => {
-    const cardElement = createCard(res);
-    cards.prepenedItem(cardElement);
-    addCardFormValidation.toggleButtonState();
-  });
-});
-
-const imageModal = new PopupWithImage("popup_type_card");
-imageModal.setEventListeners();
 
 /**
  * Fill data in editProfileMockup
@@ -87,18 +46,92 @@ const fillEditProfileForm = (name, about) => {
   nameEditProfileInput.value = name;
   jobEditProfileInput.value = about;
 };
-
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   jobSelector: ".profile__subtitle",
 });
-const getUser = api.getUserInfo();
-getUser.then((data) => {
-  userInfo.setUserInfo(data);
+
+let cards;
+let userId;
+/**
+ * Generate new card
+ * @param {Object} cardObject
+ * @returns Object
+ */
+const createCard = (cardObject, userId) => {
+  const card = new Card(
+    cardObject,
+    cardTemplate,
+    {
+      handleCardClick: () => {
+        imageModal.open(cardObject.name, cardObject.link);
+      },
+      handleDeleteCard: (id) => {
+        confirmModal.open();
+        confirmModal.setAction(() => {
+          api.deleteCard(id).then(() => {
+            card.removeCard();
+          });
+        });
+      },
+      handleLikeIcon: (id) => {
+        const isAlreadyLiked = card.isLiked();
+        console.log(isAlreadyLiked)
+        if (isAlreadyLiked) {
+          api.dislikeCard(id).then((res) => {
+            console.log('dislike', res);
+            card.toggleLike(res.likes);
+          });
+        } else {
+          api.likeCard(id).then((res) => {
+            console.log('like', res);
+            card.toggleLike(res.likes);
+          });
+        }
+      },
+    },
+    userId
+  );
+  return card.generateCard();
+};
+
+Promise.all([api.getInitialCards(), api.getUserInfo()]).then(
+  ([items, userData]) => {
+    userId = userData._id;
+    console.log("id", userId);
+    userInfo.setUserInfo({ name: userData.name, about: userData.about });
+    cards = new Section(
+      {
+        items: items,
+        renderer: (data) => {
+          const cardElement = createCard(data, userId);
+          return cardElement;
+        },
+      },
+      ".gallery"
+    );
+    cards.renderItems();
+  }
+);
+
+const addNewCardModal = new PopupWithForm("popup_type_add-card", (data) => {
+  api.addCard(data).then((res) => {
+    const cardElement = createCard(res, userId);
+    cards.prepenedItem(cardElement);
+    addCardFormValidation.toggleButtonState();
+  });
 });
+addNewCardModal.setEventListeners();
+
+const imageModal = new PopupWithImage("popup_type_card");
+imageModal.setEventListeners();
+const confirmModal = new PopupWithSubmit("popup_type_delete-card-form");
+confirmModal.setEventListeners();
 
 const editModal = new PopupWithForm("popup_type_edit-profile", (data) => {
-  userInfo.setUserInfo(data);
+  api.editUserInfo(data).then((res) => {
+    userInfo.setUserInfo(res);
+  })
 });
 editModal.setEventListeners();
 
@@ -108,8 +141,6 @@ editProfileModalButton.addEventListener("click", () => {
   editModal.open();
   editProfileFormValidator.resetValidation();
 });
-
-addNewCardModal.setEventListeners();
 
 addCardModalButton.addEventListener("click", () => {
   addNewCardModal.open();
