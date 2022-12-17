@@ -20,11 +20,14 @@
     </header>
     <main class="main">
       <section class="profile">
-        <img
-          src="<%= require('./images/jacques-cousteau.png')%>"
-          alt="avatar"
-          class="profile__avatar"
-        />
+        <div class="profile__avatar">
+          <img
+            src="<%= require('./images/jacques-cousteau.png')%>"
+            alt="avatar"
+            class="profile__avatar-img"
+          />
+          <button class="profile__change-avatar-button"></button>
+        </div>
         <div class="profile__description">
           <div class="profile__wrapper">
             <h1 class="profile__title"></h1>
@@ -107,6 +110,27 @@
         </form>
       </div>
     </div>
+    <!-- Edit Avatar Modal Window -->
+    <div class="popup popup_type_edit-avatar">
+      <div class="popup__content">
+        <button type="button" class="popup__close"></button>
+        <h2 class="popup__header">Change profile picture</h2>
+        <form name="profile" class="form popup__form" novalidate>
+          <fieldset class="form__editor">
+            <input
+              id="link-avatar"
+              type="url"
+              placeholder="Image link"
+              name="link"
+              class="form__input form__input_content_link"
+              required
+            />
+            <span class="link-avatar-error form__input-error"></span>
+          </fieldset>
+          <button type="submit" class="form__button">Save</button>
+        </form>
+      </div>
+    </div>
 
     <!-- View Card by Popup -->
     <div class="popup popup_type_card">
@@ -122,10 +146,7 @@
         <button class="popup__close"></button>
         <form class="form form_delete-card">
           <h1 class="form__heading">Are you sure?</h1>
-          <button
-            type="submit"
-            class="form__button form__button_delete-card"
-          >
+          <button type="submit" class="form__button form__button_delete-card">
             Yes
           </button>
         </form>

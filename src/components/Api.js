@@ -28,7 +28,7 @@ export default class Api {
   }
   editUserInfo(newUserInfo) {
     return fetch(`${this._baseUrl}/users/me`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: this._headers,
       body: JSON.stringify(newUserInfo),
     })
@@ -76,6 +76,18 @@ export default class Api {
     return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
       method: "DELETE",
       headers: this._headers,
+    })
+      .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  editUserAvatar(avatar) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({ avatar }),
     })
       .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
       .catch((err) => {

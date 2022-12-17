@@ -16,9 +16,15 @@ const editFormElement = editProfileModal.querySelector(".form");
 const addCardModal = document.querySelector(".popup_type_add-card");
 const addCardFormElement = addCardModal.querySelector(".form");
 
+const editAvatarCardModal = document.querySelector(".popup_type_edit-avatar");
+const editAvatarElement = editAvatarCardModal.querySelector(".form");
+
 //Buttons
 const editProfileModalButton = document.querySelector(".profile__button-edit");
 const addCardModalButton = document.querySelector(".profile__button-add");
+const editAvatarButton = document.querySelector(
+  ".profile__change-avatar-button"
+);
 
 //Inputs
 const nameEditProfileInput = document.querySelector(
@@ -49,10 +55,12 @@ const fillEditProfileForm = (name, about) => {
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   jobSelector: ".profile__subtitle",
+  avatarSelector: ".profile__avatar-img",
 });
 
 let cards;
 let userId;
+const getUser = api.getUserInfo();
 /**
  * Generate new card
  * @param {Object} cardObject
@@ -76,15 +84,15 @@ const createCard = (cardObject, userId) => {
       },
       handleLikeIcon: (id) => {
         const isAlreadyLiked = card.isLiked();
-        console.log(isAlreadyLiked)
+        console.log(isAlreadyLiked);
         if (isAlreadyLiked) {
           api.dislikeCard(id).then((res) => {
-            console.log('dislike', res);
+            console.log("dislike", res);
             card.toggleLike(res.likes);
           });
         } else {
           api.likeCard(id).then((res) => {
-            console.log('like', res);
+            console.log("like", res);
             card.toggleLike(res.likes);
           });
         }
@@ -95,24 +103,22 @@ const createCard = (cardObject, userId) => {
   return card.generateCard();
 };
 
-Promise.all([api.getInitialCards(), api.getUserInfo()]).then(
-  ([items, userData]) => {
-    userId = userData._id;
-    console.log("id", userId);
-    userInfo.setUserInfo({ name: userData.name, about: userData.about });
-    cards = new Section(
-      {
-        items: items,
-        renderer: (data) => {
-          const cardElement = createCard(data, userId);
-          return cardElement;
-        },
+Promise.all([api.getInitialCards(), getUser]).then(([items, userData]) => {
+  userId = userData._id;
+  userInfo.setUserInfo({ name: userData.name, about: userData.about });
+  userInfo.setAvatar({ avatar: userData.avatar });
+  cards = new Section(
+    {
+      items: items,
+      renderer: (data) => {
+        const cardElement = createCard(data, userId);
+        return cardElement;
       },
-      ".gallery"
-    );
-    cards.renderItems();
-  }
-);
+    },
+    ".gallery"
+  );
+  cards.renderItems();
+});
 
 const addNewCardModal = new PopupWithForm("popup_type_add-card", (data) => {
   api.addCard(data).then((res) => {
@@ -123,6 +129,14 @@ const addNewCardModal = new PopupWithForm("popup_type_add-card", (data) => {
 });
 addNewCardModal.setEventListeners();
 
+const editAvatarModal = new PopupWithForm("popup_type_edit-avatar", (data) => {
+  api.editUserAvatar(data.link).then((res) => {
+    userInfo.setAvatar({ avatar: data.link });
+    addCardFormValidation.toggleButtonState();
+  });
+});
+editAvatarModal.setEventListeners();
+
 const imageModal = new PopupWithImage("popup_type_card");
 imageModal.setEventListeners();
 const confirmModal = new PopupWithSubmit("popup_type_delete-card-form");
@@ -131,7 +145,7 @@ confirmModal.setEventListeners();
 const editModal = new PopupWithForm("popup_type_edit-profile", (data) => {
   api.editUserInfo(data).then((res) => {
     userInfo.setUserInfo(res);
-  })
+  });
 });
 editModal.setEventListeners();
 
@@ -147,6 +161,11 @@ addCardModalButton.addEventListener("click", () => {
   addCardFormValidation.resetValidation();
   addCardFormValidation.toggleButtonState();
 });
+editAvatarButton.addEventListener("click", () => {
+  editAvatarModal.open();
+  // editAvatarCardFormValidation.resetValidation();
+  // editAvatarCardFormValidation.toggleButtonState();
+});
 
 //--------------------------Validation-------------------------------------
 const editProfileFormValidator = new FormValidator(
@@ -154,8 +173,15 @@ const editProfileFormValidator = new FormValidator(
   editFormElement
 );
 editProfileFormValidator.enableValidation();
+
 const addCardFormValidation = new FormValidator(
   configClasses,
   addCardFormElement
 );
 addCardFormValidation.enableValidation();
+
+const editAvatarCardFormValidation = new FormValidator(
+  configClasses,
+  editAvatarElement
+);
+editAvatarCardFormValidation.enableValidation();
