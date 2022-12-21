@@ -129,6 +129,8 @@ Promise.all([getInitialCards, getUser]).then(([items, userData]) => {
     ".gallery"
   );
   cards.renderItems();
+}).catch((err) => {
+  console.log(err);
 });
 
 const addNewCardModal = new PopupWithForm(
@@ -142,6 +144,7 @@ const addNewCardModal = new PopupWithForm(
         const cardElement = createCard(res, userId);
         cards.prepenedItem(cardElement);
         addCardFormValidation.toggleButtonState();
+        addNewCardModal.close();
       })
       .catch((err) => {
         console.log(err);
@@ -163,6 +166,7 @@ const editAvatarModal = new PopupWithForm(
       .then(() => {
         userInfo.setAvatar({ avatar: data.link });
         addCardFormValidation.toggleButtonState();
+        editAvatarModal.close()
       })
       .catch((err) => {
         console.log(err);
@@ -178,13 +182,18 @@ const editModal = new PopupWithForm(
   "popup_type_edit-profile",
   "Save",
   (data) => {
+    editModal.showLoading();
     api
       .editUserInfo(data)
       .then((res) => {
         userInfo.setUserInfo(res);
+        editModal.close();
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        editModal.hideLoading();
       });
   }
 );
