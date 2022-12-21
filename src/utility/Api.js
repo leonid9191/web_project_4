@@ -15,20 +15,14 @@ export default class Api {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
     })
-      .then(this._checkResponse)
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._checkResponse);
   }
 
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
     })
-      .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._checkResponse);
   }
   editUserInfo(newUserInfo) {
     return fetch(`${this._baseUrl}/users/me`, {
@@ -36,10 +30,7 @@ export default class Api {
       headers: this._headers,
       body: JSON.stringify(newUserInfo),
     })
-      .then(this._checkResponse)
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._checkResponse);
   }
 
   addCard(newCardInfo) {
@@ -48,10 +39,7 @@ export default class Api {
       headers: this._headers,
       body: JSON.stringify(newCardInfo),
     })
-      .then(this._checkResponse)
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._checkResponse);
   }
 
   deleteCard(cardId) {
@@ -59,10 +47,7 @@ export default class Api {
       method: "DELETE",
       headers: this._headers,
     })
-      .then(this._checkResponse)
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._checkResponse);
   }
 
   likeCard(cardId) {
@@ -70,20 +55,14 @@ export default class Api {
       method: "PUT",
       headers: this._headers,
     })
-      .then(this._checkResponse)
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._checkResponse);
   }
   dislikeCard(cardId) {
     return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
       method: "DELETE",
       headers: this._headers,
     })
-      .then(this._checkResponse)
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._checkResponse);
   }
 
   editUserAvatar(avatar) {
@@ -92,9 +71,6 @@ export default class Api {
       headers: this._headers,
       body: JSON.stringify({ avatar }),
     })
-      .then(this._checkResponse)
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._checkResponse);
   }
 }
