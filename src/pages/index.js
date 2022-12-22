@@ -48,13 +48,6 @@ const userInfo = new UserInfo({
   jobSelector: ".profile__subtitle",
   avatarSelector: ".profile__avatar-img",
 });
-
-const getUser = api.getUserInfo().catch((err) => {
-  console.log(err);
-});
-const getInitialCards = api.getInitialCards().catch((err) => {
-  console.log(err);
-});
 /**
  * Generate new card
  * @param {Object} cardObject
@@ -114,7 +107,7 @@ const createCard = (cardObject, userId) => {
   return card.generateCard();
 };
 
-Promise.all([getInitialCards, getUser]).then(([items, userData]) => {
+Promise.all([api.getInitialCards(), api.getUserInfo()]).then(([items, userData]) => {
   userId = userData._id;
   userInfo.setUserInfo({ name: userData.name, about: userData.about });
   userInfo.setAvatar({ avatar: userData.avatar });
