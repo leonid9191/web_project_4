@@ -9,7 +9,7 @@
 * [Link to the project in Figma](https://www.figma.com/file/SurN1jaeEQIhuZEDMhmWWf/Sprint-4-Around-The-U.S.-desktop-mobile?node-id=0%3A1)
 
 **Images**
-![Alt text](./images/form%20popup.png "popup") 
+![Alt text](./src/images/form%20popup.png "popup") 
 
 ### GitHub page
 
